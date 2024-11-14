@@ -7,6 +7,8 @@
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-Bold.ttf</string>
 	</array>
+	<key>CurrencysAPIKey</key>
+	<string>3b0a514c6eb1c3c658db029f</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
