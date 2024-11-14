@@ -7,6 +7,7 @@ class CurrencyExchangeView: UIView {
     
     private let sellButton = UIButton()
     private let buyButton = UIButton()
+    private let addCurrencyButton = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,7 +19,7 @@ class CurrencyExchangeView: UIView {
     }
     
     private func setupSubviews() {
-        cornerRectangle.backgroundColor = .systemBackground
+        cornerRectangle.backgroundColor = .white
         cornerRectangle.layer.cornerRadius = 10
         cornerRectangle.layer.shadowColor = UIColor.black.cgColor
         cornerRectangle.layer.shadowOpacity = 0.15
@@ -28,8 +29,17 @@ class CurrencyExchangeView: UIView {
         
         cornerRectangle.snp.makeConstraints {
             $0.height.equalTo(398)
+            $0.top.equalToSuperview().offset(171)
             $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
+        }
+        
+        backgroundIndicator.backgroundColor = .systemBlue
+        backgroundIndicator.layer.cornerRadius = 6
+        cornerRectangle.addSubview(backgroundIndicator)
+        backgroundIndicator.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().offset(16)
+            $0.width.equalTo(139)
+            $0.height.equalTo(44)
         }
         
         sellButton.setTitle("Sell", for: .normal)
@@ -38,8 +48,7 @@ class CurrencyExchangeView: UIView {
         sellButton.addTarget(self, action: #selector(sellButtonTapped), for: .touchUpInside)
         cornerRectangle.addSubview(sellButton)
         sellButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
-            $0.leading.equalToSuperview().offset(16)
+            $0.top.leading.equalToSuperview().offset(16)
             $0.width.equalTo(139)
             $0.height.equalTo(44)
         }
@@ -50,52 +59,33 @@ class CurrencyExchangeView: UIView {
         buyButton.addTarget(self, action: #selector(buyButtonTapped), for: .touchUpInside)
         cornerRectangle.addSubview(buyButton)
         buyButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.width.equalTo(139)
-            $0.height.equalTo(44)
-        }
-        
-        backgroundIndicator.backgroundColor = .systemBlue
-        backgroundIndicator.layer.cornerRadius = 6
-        cornerRectangle.addSubview(backgroundIndicator)
-        backgroundIndicator.snp.makeConstraints {
-            $0.top.equalTo(sellButton.snp.top)
-            $0.leading.equalTo(sellButton.snp.leading)
+            $0.top.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(139)
             $0.height.equalTo(44)
         }
     }
     
     @objc private func buyButtonTapped() {
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-            self.backgroundIndicator.snp.remakeConstraints {
-                $0.top.equalTo(self.buyButton.snp.top)
-                $0.leading.equalTo(self.buyButton.snp.leading)
-                $0.width.equalTo(self.buyButton.snp.width)
-                $0.height.equalTo(self.buyButton.snp.height)
-            }
-            self.layoutIfNeeded()
-
-            self.buyButton.setTitleColor(.white, for: .normal)
-            self.sellButton.backgroundColor = .white
-            self.sellButton.setTitleColor(.black, for: .normal)
-        })
+        buttonTapped(buyButton, changeOn: sellButton)
     }
 
     @objc private func sellButtonTapped() {
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+        buttonTapped(sellButton, changeOn: buyButton)
+    }
+    
+    private func buttonTapped(_ selectedButton: UIButton, changeOn: UIButton) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
             self.backgroundIndicator.snp.remakeConstraints {
-                $0.top.equalTo(self.sellButton.snp.top)
-                $0.leading.equalTo(self.sellButton.snp.leading)
-                $0.width.equalTo(self.sellButton.snp.width)
-                $0.height.equalTo(self.sellButton.snp.height)
+                $0.top.equalTo(selectedButton.snp.top)
+                $0.leading.equalTo(selectedButton.snp.leading)
+                $0.width.equalTo(selectedButton.snp.width)
+                $0.height.equalTo(selectedButton.snp.height)
             }
             self.layoutIfNeeded()
-            self.sellButton.setTitleColor(.white, for: .normal)
-            self.buyButton.backgroundColor = .white
-            self.buyButton.setTitleColor(.black, for: .normal)
-        })
+            
+            selectedButton.setTitleColor(.white, for: .normal)
+            changeOn.setTitleColor(.black, for: .normal)
+        }
     }
 }
 

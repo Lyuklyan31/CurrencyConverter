@@ -27,10 +27,8 @@ class MainViewController: UIViewController {
     private func setupCurrencyExchangeView() {
         view.addSubview(currencyExchangeView)
         currencyExchangeView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(171)
-            $0.horizontalEdges.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
-        
     }
 }
 
