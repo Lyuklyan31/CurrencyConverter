@@ -25,10 +25,19 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyExchangeView() {
+        currencyExchangeView.openSheetAction = { [weak self] in
+            self?.openSheet()
+        }
         view.addSubview(currencyExchangeView)
         currencyExchangeView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    func openSheet() {
+        let currencysVC = CurrencysViewController()
+        currencysVC.modalPresentationStyle = .pageSheet
+        present(currencysVC, animated: true, completion: nil)
     }
 }
 

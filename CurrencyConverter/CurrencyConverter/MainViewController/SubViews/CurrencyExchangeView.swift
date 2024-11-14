@@ -9,6 +9,8 @@ class CurrencyExchangeView: UIView {
     private let buyButton = UIButton()
     private let addCurrencyButton = UIButton()
     
+    var openSheetAction: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
@@ -63,6 +65,23 @@ class CurrencyExchangeView: UIView {
             $0.width.equalTo(139)
             $0.height.equalTo(44)
         }
+        
+        var config = UIButton.Configuration.plain()
+        config.title = "Add Currency"
+        config.image = UIImage(systemName: "plus.circle.fill")
+        config.imagePadding = 8.22
+        
+        addCurrencyButton.configuration = config
+        addCurrencyButton.setTitleColor(.systemBlue, for: .normal)
+        addCurrencyButton.titleLabel?.font = UIFont(name: "Lato-Regular", size: 13)
+        
+        cornerRectangle.addSubview(addCurrencyButton)
+        
+        addCurrencyButton.addTarget(self, action: #selector(addCurrencyButtonTapped), for: .touchUpInside)
+        addCurrencyButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-62)
+            $0.centerX.equalToSuperview()
+        }
     }
     
     @objc private func buyButtonTapped() {
@@ -86,6 +105,10 @@ class CurrencyExchangeView: UIView {
             selectedButton.setTitleColor(.white, for: .normal)
             changeOn.setTitleColor(.black, for: .normal)
         }
+    }
+    
+    @objc private func addCurrencyButtonTapped() {
+        openSheetAction?()  
     }
 }
 
