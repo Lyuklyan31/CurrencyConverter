@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class CurrencyExchangeView: UIView {
+class CurrencyConverterView: UIView {
     private let cornerRectangle = UIView()
     private let backgroundIndicator = UIView()
     
@@ -76,7 +76,6 @@ class CurrencyExchangeView: UIView {
         addCurrencyButton.titleLabel?.font = UIFont(name: "Lato-Regular", size: 13)
         
         cornerRectangle.addSubview(addCurrencyButton)
-        
         addCurrencyButton.addTarget(self, action: #selector(addCurrencyButtonTapped), for: .touchUpInside)
         addCurrencyButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().offset(-62)
@@ -113,5 +112,5 @@ class CurrencyExchangeView: UIView {
 }
 
 #Preview {
-    CurrencyExchangeView()
+    CurrencyConverterView()
 }
