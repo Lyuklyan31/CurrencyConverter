@@ -6,7 +6,7 @@ class CurrenciesViewController: UIViewController {
     private var viewModel: CurrencyViewModel
 
     private let currencyNavigationBarView = CurrencyNavigationBarView()
-    private let currencySearchTextField = CurrencySearchTextField()
+    private let currencySearchTextFieldView = CurrencySearchTextFieldView()
     
     private let tableView = UITableView()
     private var searchTextField = UITextField()
@@ -40,8 +40,8 @@ class CurrenciesViewController: UIViewController {
     }
     
     private func setupCurrencySearchTextField() {
-        view.addSubview(currencySearchTextField)
-        currencySearchTextField.snp.makeConstraints {
+        view.addSubview(currencySearchTextFieldView)
+        currencySearchTextFieldView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(75)
             $0.horizontalEdges.equalToSuperview().inset(16)
         }
