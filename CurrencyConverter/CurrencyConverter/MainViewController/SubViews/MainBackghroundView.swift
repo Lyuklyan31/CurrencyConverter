@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class BackgroundView: UIView {
+class MainBackgroundView: UIView {
 
     private let lowerOvalView = UIView()
     private let middleOvalView = UIView()
@@ -79,5 +79,5 @@ class BackgroundView: UIView {
 }
 
 #Preview {
-    BackgroundView()
+    MainBackgroundView()
 }

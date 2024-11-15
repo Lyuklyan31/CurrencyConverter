@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class CurrencyConverterView: UIView {
+class ConverterView: UIView {
     private let cornerRectangle = UIView()
     private let backgroundIndicator = UIView()
     
@@ -112,5 +112,5 @@ class CurrencyConverterView: UIView {
 }
 
 #Preview {
-    CurrencyConverterView()
+    ConverterView()
 }

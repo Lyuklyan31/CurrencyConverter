@@ -4,8 +4,8 @@ class MainViewController: UIViewController {
 
     let viewModel = CurrencyViewModel()
     
-    let backgroundView = BackgroundView()
-    let currencyExchangeView = CurrencyConverterView()
+    let backgroundView = MainBackgroundView()
+    let currencyExchangeView = ConverterView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
