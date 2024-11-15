@@ -32,6 +32,12 @@ class CurrenciesViewController: UIViewController {
         setupBinding()
         currencyNavigationBarView.setupNavBar(for: self)
         setupCurrencySearchTextField()
+        setupTableView()
+    }
+    
+    private func configureDefaults() {
+        setupDataSource()
+        setupBinding()
     }
     
     private func setupBinding() {
