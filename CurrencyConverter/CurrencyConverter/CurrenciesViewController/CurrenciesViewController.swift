@@ -9,8 +9,9 @@ class CurrenciesViewController: UIViewController {
     private let currencySearchTextFieldView = CurrenciesSearchTextFieldView()
     
     private let tableView = UITableView()
+    private var sortedKeys: [String] = []
     
-    private var dataSource: UITableViewDiffableDataSource<Int, CurrencyModel>!
+    private var dataSource: UITableViewDiffableDataSource<String, CurrencyModel>!
     private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: CurrencyViewModel) {
@@ -38,7 +39,7 @@ class CurrenciesViewController: UIViewController {
         setupDataSource()
         setupBinding()
     }
-    
+        
     private func setupBinding() {
         viewModel.$currencies
             .receive(on: DispatchQueue.main)
@@ -58,25 +59,25 @@ class CurrenciesViewController: UIViewController {
     }
     
     private func setupTableView() {
-        
         tableView.layer.shadowColor = UIColor.black.cgColor
         tableView.layer.shadowOpacity = 0.15
         tableView.layer.shadowOffset = CGSize(width: 0, height: 6)
         tableView.showsVerticalScrollIndicator = false
         tableView.layer.cornerRadius = 10
+        tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.register(CurrencyCell.self, forCellReuseIdentifier: "CurrencyCell")
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints {
-            $0.top.equalTo(currencySearchTextFieldView.snp.bottom).offset(54)
+            $0.top.equalTo(currencySearchTextFieldView.snp.bottom)
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.greaterThanOrEqualToSuperview()
         }
     }
     
     private func setupDataSource() {
-        dataSource = UITableViewDiffableDataSource<Int, CurrencyModel>(tableView: tableView) { tableView, indexPath, currencyData in
+        dataSource = UITableViewDiffableDataSource<String, CurrencyModel>(tableView: tableView) { tableView, indexPath, currencyData in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath) as? CurrencyCell else { return UITableViewCell() }
             
             cell.configure(with: "\(currencyData.code) - \(currencyData.name)")
@@ -86,9 +87,20 @@ class CurrenciesViewController: UIViewController {
     }
     
     private func applySnapShot(with currencies: [CurrencyModel]) {
-        var snapShot = NSDiffableDataSourceSnapshot<Int, CurrencyModel>()
-        snapShot.appendSections([0])
-        snapShot.appendItems(currencies, toSection: 0)
+        let groupedCurrencies = Dictionary(grouping: currencies) { (currency: CurrencyModel) -> String in
+            return String(currency.code.prefix(1)).uppercased()
+        }
+        
+        var snapShot = NSDiffableDataSourceSnapshot<String, CurrencyModel>()
+        sortedKeys = groupedCurrencies.keys.sorted()
+        snapShot.appendSections(sortedKeys)
+        
+        for key in sortedKeys {
+            if let items = groupedCurrencies[key] {
+                snapShot.appendItems(items, toSection: key)
+            }
+        }
+        
         dataSource.apply(snapShot, animatingDifferences: true)
     }
 }
@@ -96,8 +108,18 @@ class CurrenciesViewController: UIViewController {
 extension CurrenciesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
-}
-
-#Preview {
-    CurrenciesViewController(viewModel: CurrencyViewModel())
+    
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sortedKeys[section]
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 54
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        return view
+    }
 }
