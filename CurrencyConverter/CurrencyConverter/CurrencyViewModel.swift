@@ -1,9 +1,10 @@
 import Foundation
+import Combine
 
 class CurrencyViewModel {
     private var currencyService = CurrencyService()
     
-    private var currencyList = [CurrencyModel]()
+    @Published private(set) var currencies = [CurrencyModel]()
     
     @Published private(set) var alertMessage: String?
     
@@ -13,8 +14,8 @@ class CurrencyViewModel {
     
    private func fetchCurrencies() {
        do {
-           currencyList = try currencyService.fetchCurrencies()
-           print(currencyList)
+           currencies = try currencyService.fetchCurrencies()
+           print("Currencies: \(currencies)")
        } catch {
            alertMessage = "Error fetching currencies."
        }
