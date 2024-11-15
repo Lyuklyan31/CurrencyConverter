@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class CurrencySearchTextFieldView: UIView {
+class CurrenciesSearchTextFieldView: UIView {
     private let searchTextField = UISearchTextField()
     private let microphoneButton = UIButton()
     

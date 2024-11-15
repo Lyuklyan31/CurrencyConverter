@@ -5,8 +5,8 @@ import Combine
 class CurrenciesViewController: UIViewController {
     private var viewModel: CurrencyViewModel
 
-    private let currencyNavigationBarView = CurrencyNavigationBarView()
-    private let currencySearchTextFieldView = CurrencySearchTextFieldView()
+    private let currencyNavigationBarView =  CurrenciesNavigationBarView()
+    private let currencySearchTextFieldView = CurrenciesSearchTextFieldView()
     
     private let tableView = UITableView()
     private var searchTextField = UITextField()

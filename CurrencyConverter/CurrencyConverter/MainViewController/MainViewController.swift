@@ -2,8 +2,10 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+    let viewModel = CurrencyViewModel()
+    
     let backgroundView = BackgroundView()
-    let currencyExchangeView = CurrencyExchangeView()
+    let currencyExchangeView = CurrencyConverterView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,10 +36,11 @@ class MainViewController: UIViewController {
         }
     }
     
-    func openSheet() {
-        let currencysVC = CurrencysViewController()
-        currencysVC.modalPresentationStyle = .pageSheet
-        present(currencysVC, animated: true, completion: nil)
+    private func openSheet() {
+        let currenciesVC = CurrenciesViewController(viewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: currenciesVC)
+        navigationController.modalPresentationStyle = .pageSheet
+        present(navigationController, animated: true, completion: nil)
     }
 }
 

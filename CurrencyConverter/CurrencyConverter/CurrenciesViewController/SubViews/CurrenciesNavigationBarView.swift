@@ -1,6 +1,6 @@
 import UIKit
 
-class CurrencyNavigationBarView: UIView {
+class CurrenciesNavigationBarView: UIView {
     private let backButton = UIButton(type: .system)
     
     func setupNavBar(for viewController: UIViewController) {
