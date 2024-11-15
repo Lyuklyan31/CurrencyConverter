@@ -1,7 +1,6 @@
 import UIKit
 
 class MainViewController: UIViewController {
-
     let viewModel = CurrencyViewModel()
     
     let backgroundView = MainBackgroundView()

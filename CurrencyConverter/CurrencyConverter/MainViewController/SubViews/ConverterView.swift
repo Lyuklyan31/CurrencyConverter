@@ -46,6 +46,7 @@ class ConverterView: UIView {
         
         sellButton.setTitle("Sell", for: .normal)
         sellButton.setTitleColor(.white, for: .normal)
+        sellButton.titleLabel?.font = UIFont(name: "Lato-Regular", size: 18)
         sellButton.layer.cornerRadius = 6
         sellButton.addTarget(self, action: #selector(sellButtonTapped), for: .touchUpInside)
         cornerRectangle.addSubview(sellButton)
@@ -57,6 +58,7 @@ class ConverterView: UIView {
         
         buyButton.setTitle("Buy", for: .normal)
         buyButton.setTitleColor(.black, for: .normal)
+        buyButton.titleLabel?.font = UIFont(name: "Lato-Regular", size: 18)
         buyButton.layer.cornerRadius = 6
         buyButton.addTarget(self, action: #selector(buyButtonTapped), for: .touchUpInside)
         cornerRectangle.addSubview(buyButton)
