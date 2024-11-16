@@ -15,7 +15,7 @@ class CurrencyCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-   private func setupSubViews() {
+    private func setupSubViews() {
         cellLabel.textColor = .black
         cellLabel.font = UIFont(name: "Lato-Regular", size: 17)
         cellLabel.numberOfLines = 0
