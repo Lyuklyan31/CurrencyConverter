@@ -6,7 +6,7 @@ class CurrenciesViewController: UIViewController {
     private var viewModel: CurrencyViewModel
     
     private let currencyNavigationBarView = CurrenciesNavigationBarView()
-    private let currencySearchTextFieldView = CurrenciesSearchTextFieldView()
+    private var currencySearchTextFieldView: CurrenciesSearchTextFieldView!
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var sortedKeys: [String] = []
     
@@ -16,6 +16,7 @@ class CurrenciesViewController: UIViewController {
     init(viewModel: CurrencyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+      
     }
     
     required init?(coder: NSCoder) {
@@ -26,8 +27,6 @@ class CurrenciesViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         configureDefaults()
-       
-        
     }
     
     private func setupUI() {
@@ -37,6 +36,7 @@ class CurrenciesViewController: UIViewController {
     }
     
     private func setupCurrencySearchTextField() {
+        currencySearchTextFieldView = CurrenciesSearchTextFieldView(viewModel: viewModel)
         view.addSubview(currencySearchTextFieldView)
         currencySearchTextFieldView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(75)
@@ -47,9 +47,9 @@ class CurrenciesViewController: UIViewController {
     private func setupTableView() {
         tableView.layer.shadowColor = UIColor.black.cgColor
         tableView.layer.shadowOpacity = 0.15
-        tableView.layer.shadowOffset = CGSize(width: 0, height: 6)
+        tableView.layer.shadowOffset = CGSize(width: 0, height: 4)
         tableView.showsVerticalScrollIndicator = false
-        tableView.layer.cornerRadius = 10
+
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
@@ -131,8 +131,9 @@ extension CurrenciesViewController: UITableViewDelegate {
         label.textColor = .darkGray
 
         headerView.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(8)
+        label.snp.makeConstraints {
+            $0.verticalEdges.leading.equalToSuperview().inset(8)
+            $0.trailing.lessThanOrEqualToSuperview()
         }
 
         return headerView
