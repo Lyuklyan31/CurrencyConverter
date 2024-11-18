@@ -3,16 +3,23 @@ import UIKit
 class MainViewController: UIViewController {
     let viewModel = CurrencyViewModel()
     
-    let backgroundView = MainBackgroundView()
-    let converterView = ConverterView()
+    private let backgroundView = MainBackgroundView()
+    private var converterView: ConverterView!
+        
+    private let titleLabel = UILabel()
+    let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+//        print("ScrollView Content Size: \(scrollView.contentSize)")
     }
     
     private func setupUI() {
         setupBackgroundView()
+        setupScrollView()
+        setupTitle()
         setupCurrencyExchangeView()
     }
     
@@ -25,14 +32,47 @@ class MainViewController: UIViewController {
         }
     }
     
+    private func setupScrollView() {
+        scrollView.isScrollEnabled = true
+        scrollView.alwaysBounceVertical = true
+        
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+            $0.height.equalTo(scrollView)
+        }
+    }
+    
+    private func setupTitle() {
+        titleLabel.text = "Currency Converter"
+        titleLabel.font = UIFont(name: "Lato-Bold", size: 24)
+        titleLabel.textColor = .white
+        
+        contentView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.lessThanOrEqualToSuperview()
+        }
+    }
+    
     private func setupCurrencyExchangeView() {
         converterView = ConverterView(viewModel: viewModel)
         converterView.openSheetAction = { [weak self] in
             self?.openSheet()
         }
-        view.addSubview(converterView)
+        contentView.addSubview(converterView)
         converterView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(33)
+            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
         }
     }
     
