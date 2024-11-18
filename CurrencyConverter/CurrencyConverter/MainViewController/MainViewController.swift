@@ -26,6 +26,7 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyExchangeView() {
+        converterView = ConverterView(viewModel: viewModel)
         converterView.openSheetAction = { [weak self] in
             self?.openSheet()
         }
