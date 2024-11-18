@@ -7,8 +7,6 @@ class MainBackgroundView: UIView {
     private let middleOvalView = UIView()
     private let upperOvalView = UIView()
     
-    private let titleLabel = UILabel()
-    
     init() {
         super.init(frame: .zero)
         setupSubviews()
@@ -64,16 +62,6 @@ class MainBackgroundView: UIView {
             $0.height.equalTo(350)
             $0.top.equalTo(middleOvalView.snp.top)
             $0.trailing.equalTo(middleOvalView.snp.trailing).offset(-33.41)
-        }
-        
-        titleLabel.text = "Currency Converter"
-        titleLabel.font = UIFont(name: "Lato-Bold", size: 24)
-        titleLabel.textColor = .white
-        
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(96)
-            $0.leading.equalToSuperview()
         }
     }
 }
