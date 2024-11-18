@@ -16,7 +16,7 @@ class CurrenciesViewController: UIViewController {
     init(viewModel: CurrencyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-      
+        viewModel.fetchCurrencies()
     }
     
     required init?(coder: NSCoder) {
