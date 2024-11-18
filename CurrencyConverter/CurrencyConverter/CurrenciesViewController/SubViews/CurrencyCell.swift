@@ -3,8 +3,6 @@ import UIKit
 
 class CurrencyCell: UITableViewCell {
     private let cellLabel = UILabel()
-    private let backgroundCell = UIView()
-    private let cheсkmark = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,6 +24,8 @@ class CurrencyCell: UITableViewCell {
             $0.trailing.lessThanOrEqualToSuperview()
             $0.verticalEdges.equalToSuperview().inset(13)
         }
+        
+        
     }
     
     func configure(with text: String) {

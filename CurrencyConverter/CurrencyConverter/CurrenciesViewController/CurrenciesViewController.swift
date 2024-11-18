@@ -114,7 +114,10 @@ class CurrenciesViewController: UIViewController {
 // MARK: - UITableViewDelegate
 extension CurrenciesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+//        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+        viewModel.updateConverterList(at: indexPath.row)
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
