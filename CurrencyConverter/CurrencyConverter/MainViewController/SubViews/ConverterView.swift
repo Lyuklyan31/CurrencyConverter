@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 import SnapKit
 
 class ConverterView: UIView {
@@ -8,6 +9,11 @@ class ConverterView: UIView {
     private let sellButton = UIButton()
     private let buyButton = UIButton()
     private let addCurrencyButton = UIButton()
+    
+    private let tableView = UITableView()
+    
+    private var dataSource: UITableViewDiffableDataSource<Int, CurrencyModel>!
+    private var cancellables = Set<AnyCancellable>()
     
     var openSheetAction: (() -> Void)?
     
@@ -26,11 +32,9 @@ class ConverterView: UIView {
         cornerRectangle.layer.shadowColor = UIColor.black.cgColor
         cornerRectangle.layer.shadowOpacity = 0.15
         cornerRectangle.layer.shadowOffset = CGSize(width: 0, height: 6)
-        cornerRectangle.backgroundColor = .white
         addSubview(cornerRectangle)
         
         cornerRectangle.snp.makeConstraints {
-            $0.height.equalTo(398)
             $0.top.equalToSuperview().offset(171)
             $0.horizontalEdges.equalToSuperview().inset(16)
         }
@@ -80,9 +84,30 @@ class ConverterView: UIView {
         cornerRectangle.addSubview(addCurrencyButton)
         addCurrencyButton.addTarget(self, action: #selector(addCurrencyButtonTapped), for: .touchUpInside)
         addCurrencyButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().offset(-62)
+            $0.top.equalTo(sellButton.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-50)
         }
+        
+//        tableView.delegate = self
+        tableView.register(ConverterCell.self, forCellReuseIdentifier: "ConverterCell")
+        tableView.backgroundColor = .clear
+    }
+    
+    private func setupDataSource() {
+        dataSource = UITableViewDiffableDataSource<Int, CurrencyModel>(tableView: tableView) { tableView, IndexPath, currency in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConverterCell", for: IndexPath) as? CurrencyCell else { return UITableViewCell() }
+            
+            cell.configure(with: currency.code)
+            return cell
+        }
+    }
+    
+    private func applySnapshot(with currencies: [CurrencyModel]) { // fix name when will be array in viewModel
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CurrencyModel>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(currencies, toSection: 0)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     @objc private func buyButtonTapped() {
@@ -109,8 +134,13 @@ class ConverterView: UIView {
     }
     
     @objc private func addCurrencyButtonTapped() {
-        openSheetAction?()  
+        openSheetAction?()
     }
+}
+
+// MARK: - UITableViewDelegate
+extension ConverterView: UITableViewDelegate {
+    
 }
 
 #Preview {
