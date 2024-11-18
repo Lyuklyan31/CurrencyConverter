@@ -4,7 +4,7 @@ class MainViewController: UIViewController {
     let viewModel = CurrencyViewModel()
     
     let backgroundView = MainBackgroundView()
-    let currencyExchangeView = ConverterView()
+    let converterView = ConverterView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +26,11 @@ class MainViewController: UIViewController {
     }
     
     private func setupCurrencyExchangeView() {
-        currencyExchangeView.openSheetAction = { [weak self] in
+        converterView.openSheetAction = { [weak self] in
             self?.openSheet()
         }
-        view.addSubview(currencyExchangeView)
-        currencyExchangeView.snp.makeConstraints {
+        view.addSubview(converterView)
+        converterView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
