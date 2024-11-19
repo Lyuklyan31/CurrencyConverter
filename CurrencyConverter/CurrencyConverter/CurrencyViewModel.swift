@@ -3,6 +3,7 @@ import Combine
 
 class CurrencyViewModel {
     private var currencyService = CurrencyService()
+    private let rateService = RateService()
     
     @Published private(set) var currencies = [CurrencyModel]()
     @Published private(set) var converterList = [CurrencyModel]() {
@@ -11,6 +12,8 @@ class CurrencyViewModel {
         }
     }
     @Published private(set) var alertMessage: String?
+    @Published private(set) var conversionRates = [String: Double]()
+    
     private var allCurrencies = [CurrencyModel]()
     
     private let userDefaultsKey = "converterList"
@@ -18,6 +21,7 @@ class CurrencyViewModel {
     init() {
         fetchCurrencies()
         loadConverterList()
+        loadExchangeRates()
     }
     
     func fetchCurrencies() {
@@ -57,5 +61,37 @@ class CurrencyViewModel {
             }
             return nil
         }
+    }
+    
+    private func loadExchangeRates() {
+        if let savedRatesData = UserDefaults.standard.data(forKey: "conversionRates"),
+           let savedRates = try? JSONDecoder().decode(RateModel.self, from: savedRatesData) {
+            conversionRates = savedRates.conversionRates
+        } else {
+
+        }
+    }
+    
+    func fetchExchangeRates() {
+        Task {
+            do {
+                let rateModel = try await rateService.fetchRates()
+                
+                saveExchangeRates(rateModel)
+                conversionRates = rateModel.conversionRates
+            } catch {
+               
+            }
+        }
+    }
+    
+    private func saveExchangeRates(_ rateModel: RateModel) {
+        if let encodedRates = try? JSONEncoder().encode(rateModel) {
+            UserDefaults.standard.set(encodedRates, forKey: "conversionRates")
+        }
+    }
+    
+    private func ccalculationRate(number: Double) {
+        
     }
 }
