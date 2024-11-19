@@ -1,10 +1,16 @@
 import UIKit
+import Combine
 
 class ConverterCell: UITableViewCell {
+    var viewModel = CurrencyViewModel()
+
     private let currencyButton = UIButton()
     private let converterTextField = UITextField()
     private let backgroundTextFieldView = UIView()
     private let conteinerView = UIView()
+    
+    private var textCode = ""
+    private var cancellables = Set<AnyCancellable>()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,15 +74,25 @@ class ConverterCell: UITableViewCell {
         }
     }
     
+    private func setupBinding() {
+        viewModel.$conversionRates
+            .sink { [weak self] rate in
+                guard let self = self else { return }
+                let rateText = rate[self.textCode] ?? 0.0
+                DispatchQueue.main.async {
+                    self.converterTextField.placeholder = String(format: "%.2f", rateText)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
     @objc func currencyButtonTapped() {
         print("Currency button tapped")
     }
-    
-    func configure(with text: String) {
-        currencyButton.setTitle(text, for: .normal)
-    }
-}
 
-#Preview {
-    ConverterCell()
+    func configure(with text: String) {
+        textCode = text
+        currencyButton.setTitle(text, for: .normal)
+        setupBinding()
+    }
 }

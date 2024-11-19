@@ -7,13 +7,12 @@ class MainViewController: UIViewController {
     private var converterView: ConverterView!
         
     private let titleLabel = UILabel()
-    let scrollView = UIScrollView()
+    private let scrollView = UIScrollView()
     private let contentView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-//        print("ScrollView Content Size: \(scrollView.contentSize)")
     }
     
     private func setupUI() {
