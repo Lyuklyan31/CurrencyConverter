@@ -5,8 +5,8 @@ import SnapKit
 class ConverterView: UIView {
     var viewModel: CurrencyViewModel
     
-    private let cornerRectangle = UIView()
-    private let backgroundIndicator = UIView()
+    private let cornerRectangleView = UIView()
+    private let buttonIndicatorView = UIView()
     
     private let sellButton = UIButton()
     private let buyButton = UIButton()
@@ -33,22 +33,22 @@ class ConverterView: UIView {
     }
     
     private func setupSubviews() {
-        cornerRectangle.backgroundColor = .white
-        cornerRectangle.layer.cornerRadius = 10
-        cornerRectangle.layer.shadowColor = UIColor.black.cgColor
-        cornerRectangle.layer.shadowOpacity = 0.15
-        cornerRectangle.layer.shadowOffset = CGSize(width: 0, height: 6)
-        addSubview(cornerRectangle)
+        cornerRectangleView.backgroundColor = .white
+        cornerRectangleView.layer.cornerRadius = 10
+        cornerRectangleView.layer.shadowColor = UIColor.black.cgColor
+        cornerRectangleView.layer.shadowOpacity = 0.15
+        cornerRectangleView.layer.shadowOffset = CGSize(width: 0, height: 6)
+        addSubview(cornerRectangleView)
         
-        cornerRectangle.snp.makeConstraints {
+        cornerRectangleView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
         }
         
-        backgroundIndicator.backgroundColor = .systemBlue
-        backgroundIndicator.layer.cornerRadius = 6
-        cornerRectangle.addSubview(backgroundIndicator)
-        backgroundIndicator.snp.makeConstraints {
+        buttonIndicatorView.backgroundColor = .systemBlue
+        buttonIndicatorView.layer.cornerRadius = 6
+        cornerRectangleView.addSubview(buttonIndicatorView)
+        buttonIndicatorView.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(16)
             $0.width.equalTo(139)
             $0.height.equalTo(44)
@@ -56,7 +56,7 @@ class ConverterView: UIView {
         
         configureButton(sellButton, title: "Sell", titleColor: .white)
         sellButton.addTarget(self, action: #selector(sellButtonTapped), for: .touchUpInside)
-        cornerRectangle.addSubview(sellButton)
+        cornerRectangleView.addSubview(sellButton)
         sellButton.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(16)
             $0.width.equalTo(139)
@@ -65,20 +65,20 @@ class ConverterView: UIView {
         
         configureButton(buyButton, title: "Buy", titleColor: .black)
         buyButton.addTarget(self, action: #selector(buyButtonTapped), for: .touchUpInside)
-        cornerRectangle.addSubview(buyButton)
+        cornerRectangleView.addSubview(buyButton)
         buyButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(139)
             $0.height.equalTo(44)
         }
-        cornerRectangle.addSubview(addCurrencyButton)
+        cornerRectangleView.addSubview(addCurrencyButton)
         
         tableView.register(ConverterCell.self, forCellReuseIdentifier: "ConverterCell")
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
         tableView.delegate = self
         
-        cornerRectangle.addSubview(tableView)
+        cornerRectangleView.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.top.equalTo(buyButton.snp.bottom).offset(32)
             $0.horizontalEdges.equalToSuperview()
@@ -147,7 +147,7 @@ class ConverterView: UIView {
     
     private func buttonTapped(_ selectedButton: UIButton, changeOn: UIButton) {
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-            self.backgroundIndicator.snp.remakeConstraints {
+            self.buttonIndicatorView.snp.remakeConstraints {
                 $0.top.equalTo(selectedButton.snp.top)
                 $0.leading.equalTo(selectedButton.snp.leading)
                 $0.width.equalTo(selectedButton.snp.width)
@@ -172,6 +172,7 @@ class ConverterView: UIView {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension ConverterView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
