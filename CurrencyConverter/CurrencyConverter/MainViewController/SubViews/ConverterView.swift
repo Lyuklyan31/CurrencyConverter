@@ -42,7 +42,7 @@ class ConverterView: UIView {
         
         cornerRectangle.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         backgroundIndicator.backgroundColor = .systemBlue
@@ -80,7 +80,7 @@ class ConverterView: UIView {
         
         cornerRectangle.addSubview(tableView)
         tableView.snp.makeConstraints {
-            $0.top.equalTo(buyButton.snp.bottom).offset(24)
+            $0.top.equalTo(buyButton.snp.bottom).offset(32)
             $0.horizontalEdges.equalToSuperview()
             self.tableViewHeightConstraint = $0.height.equalTo(44).constraint
             $0.bottom.equalTo(addCurrencyButton.snp.top).offset(-40)

@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
         backgroundView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview()
+            $0.height.equalTo(339)
         }
     }
     
@@ -42,7 +43,6 @@ class MainViewController: UIViewController {
         }
         
         scrollView.addSubview(contentView)
-        
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView)
             $0.width.equalTo(scrollView)
@@ -55,9 +55,9 @@ class MainViewController: UIViewController {
         titleLabel.font = UIFont(name: "Lato-Bold", size: 24)
         titleLabel.textColor = .white
         
-        contentView.addSubview(titleLabel)
+        backgroundView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(92)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.lessThanOrEqualToSuperview()
         }
@@ -70,8 +70,8 @@ class MainViewController: UIViewController {
         }
         contentView.addSubview(converterView)
         converterView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(33)
-            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.top.equalToSuperview().offset(52)
+            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().offset(-16)
         }
     }

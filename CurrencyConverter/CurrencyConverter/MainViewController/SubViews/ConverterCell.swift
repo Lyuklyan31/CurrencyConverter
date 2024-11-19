@@ -18,8 +18,7 @@ class ConverterCell: UITableViewCell {
     private func setupSubViews() {
         contentView.addSubview(conteinerView)
         conteinerView.snp.makeConstraints {
-            $0.height.equalTo(44)
-            $0.verticalEdges.equalToSuperview().inset(16)
+            $0.verticalEdges.equalToSuperview().inset(8)
             $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
@@ -28,7 +27,7 @@ class ConverterCell: UITableViewCell {
         
         conteinerView.addSubview(backgroundTextFieldView)
         backgroundTextFieldView.snp.makeConstraints {
-            $0.verticalEdges.right.equalToSuperview()
+            $0.height.equalTo(44)
             $0.leading.lessThanOrEqualToSuperview().offset(121)
             $0.right.equalToSuperview()
         }
@@ -42,7 +41,9 @@ class ConverterCell: UITableViewCell {
         backgroundTextFieldView.addSubview(converterTextField)
         converterTextField.snp.makeConstraints {
             $0.height.equalTo(44)
-            $0.edges.equalToSuperview().inset(16)
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
         var configuration = UIButton.Configuration.plain()
@@ -61,7 +62,9 @@ class ConverterCell: UITableViewCell {
         currencyButton.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.right.greaterThanOrEqualToSuperview().offset(-279)
-            $0.verticalEdges.equalToSuperview()
+            $0.height.equalTo(44)
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     
