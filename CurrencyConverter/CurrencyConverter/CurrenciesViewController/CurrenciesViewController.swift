@@ -35,6 +35,12 @@ class CurrenciesViewController: UIViewController {
         setupTableView()
     }
     
+    private func configureDefaults() {
+        setupDataSource()
+        setupBinding()
+        setupDismissKeyboard()
+    }
+    
     private func setupCurrencySearchTextField() {
         currencySearchTextFieldView = CurrenciesSearchTextFieldView(viewModel: viewModel)
         view.addSubview(currencySearchTextFieldView)
@@ -63,11 +69,6 @@ class CurrenciesViewController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.greaterThanOrEqualToSuperview().offset(-16)
         }
-    }
-    
-    private func configureDefaults() {
-        setupDataSource()
-        setupBinding()
     }
     
     private func setupBinding() {
@@ -114,8 +115,7 @@ class CurrenciesViewController: UIViewController {
 // MARK: - UITableViewDelegate
 extension CurrenciesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
         viewModel.updateConverterList(at: indexPath.row)
         
     }

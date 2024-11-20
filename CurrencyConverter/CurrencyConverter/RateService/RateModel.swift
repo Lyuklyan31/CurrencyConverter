@@ -9,3 +9,4 @@ struct RateModel: Codable {
         case conversionRates = "conversion_rates"
     }
 }
+

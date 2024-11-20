@@ -7,17 +7,15 @@ class MainViewController: UIViewController {
     private var converterView: ConverterView!
         
     private let titleLabel = UILabel()
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupDismissKeyboard()
     }
     
     private func setupUI() {
         setupBackgroundView()
-        setupScrollView()
         setupTitle()
         setupCurrencyExchangeView()
     }
@@ -29,23 +27,6 @@ class MainViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview()
             $0.height.equalTo(339)
-        }
-    }
-    
-    private func setupScrollView() {
-        scrollView.isScrollEnabled = true
-        scrollView.alwaysBounceVertical = true
-        
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        scrollView.addSubview(contentView)
-        contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
-            $0.height.equalTo(scrollView)
         }
     }
     
@@ -67,11 +48,11 @@ class MainViewController: UIViewController {
         converterView.openSheetAction = { [weak self] in
             self?.openSheet()
         }
-        contentView.addSubview(converterView)
+        view.addSubview(converterView)
         converterView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(52)
+            $0.top.equalToSuperview().offset(171)
             $0.horizontalEdges.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview().offset(-243)
         }
     }
     

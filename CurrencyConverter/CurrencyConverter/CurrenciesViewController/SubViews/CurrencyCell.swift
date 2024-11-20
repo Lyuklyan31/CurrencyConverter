@@ -24,8 +24,6 @@ class CurrencyCell: UITableViewCell {
             $0.trailing.lessThanOrEqualToSuperview()
             $0.verticalEdges.equalToSuperview().inset(13)
         }
-        
-        
     }
     
     func configure(with text: String) {
