@@ -2,32 +2,18 @@ import Combine
 import UIKit
 
 class CurrencyViewModel {
-    private var currencyService = CurrencyService()
+    private var currencyService = СurrenciesService()
     private let rateService = RateService()
     
-    @Published private(set) var currencies = [CurrencyModel]()
-    @Published private(set) var converterList = [ConverterCurrencyModel]() {
+    @Published private(set) var currencies = [СurrenciesModel]()
+    @Published private(set) var converterList = [CurrencyModel]() {
         didSet { saveConverterList() }
     }
     @Published private(set) var alertMessage: String?
     @Published private(set) var conversionRates = [String: Double]()
     
-    private var allCurrencies = [CurrencyModel]()
+    private var allCurrencies = [СurrenciesModel]()
     private let userDefaultsKey = "converterList"
-    
-    struct ConverterCurrencyModel: Codable, Hashable {
-        let name: String
-        let code: String
-        var value: Double
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(code)
-        }
-
-        static func == (lhs: ConverterCurrencyModel, rhs: ConverterCurrencyModel) -> Bool {
-            return lhs.code == rhs.code
-        }
-    }
     
     init() {
         fetchCurrencies()
@@ -58,7 +44,7 @@ class CurrencyViewModel {
     func updateConverterList(at indexPath: Int) {
         let selectedCurrency = currencies[indexPath]
         guard !converterList.contains(where: { $0.code == selectedCurrency.code }) else { return }
-        let newCurrency = ConverterCurrencyModel(name: selectedCurrency.name, code: selectedCurrency.code, value: 0.0)
+        let newCurrency = CurrencyModel(name: selectedCurrency.name, code: selectedCurrency.code, value: 0.0)
         converterList.append(newCurrency)
     }
     
@@ -67,11 +53,11 @@ class CurrencyViewModel {
         
         converterList = converterList.map { currency in
             if currency.code == code {
-                return ConverterCurrencyModel(name: currency.name, code: currency.code, value: newValue)
+                return CurrencyModel(name: currency.name, code: currency.code, value: newValue)
             } else {
                 guard let currentRate = conversionRates[currency.code] else { return currency }
                 let convertedValue = (newValue / baseRate) * currentRate
-                return ConverterCurrencyModel(name: currency.name, code: currency.code, value: convertedValue)
+                return CurrencyModel(name: currency.name, code: currency.code, value: convertedValue)
             }
         }
     }
@@ -87,7 +73,7 @@ class CurrencyViewModel {
             if let name = dict["name"] as? String,
                let code = dict["code"] as? String,
                let value = dict["value"] as? Double {
-                return ConverterCurrencyModel(name: name, code: code, value: value)
+                return CurrencyModel(name: name, code: code, value: value)
             }
             return nil
         }

@@ -13,7 +13,7 @@ class ConverterView: UIView {
     private let addCurrencyButton = UIButton()
     private let tableView = UITableView()
     
-    private var dataSource: UITableViewDiffableDataSource<Int, CurrencyViewModel.ConverterCurrencyModel>!
+    private var dataSource: UITableViewDiffableDataSource<Int, CurrencyModel>!
     private var cancellables = Set<AnyCancellable>()
     
     var openSheetAction: (() -> Void)?
@@ -36,8 +36,8 @@ class ConverterView: UIView {
         cornerRectangleView.layer.shadowColor = UIColor.black.cgColor
         cornerRectangleView.layer.shadowOpacity = 0.15
         cornerRectangleView.layer.shadowOffset = CGSize(width: 0, height: 6)
+       
         addSubview(cornerRectangleView)
-        
         cornerRectangleView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
@@ -46,6 +46,7 @@ class ConverterView: UIView {
         
         buttonIndicatorView.backgroundColor = .systemBlue
         buttonIndicatorView.layer.cornerRadius = 6
+        
         cornerRectangleView.addSubview(buttonIndicatorView)
         buttonIndicatorView.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(16)
@@ -55,6 +56,7 @@ class ConverterView: UIView {
         
         configureButton(sellButton, title: "Sell", titleColor: .white)
         sellButton.addTarget(self, action: #selector(sellButtonTapped), for: .touchUpInside)
+        
         cornerRectangleView.addSubview(sellButton)
         sellButton.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(16)
@@ -64,22 +66,12 @@ class ConverterView: UIView {
         
         configureButton(buyButton, title: "Buy", titleColor: .black)
         buyButton.addTarget(self, action: #selector(buyButtonTapped), for: .touchUpInside)
+        
         cornerRectangleView.addSubview(buyButton)
         buyButton.snp.makeConstraints {
             $0.top.trailing.equalToSuperview().inset(16)
             $0.width.equalTo(139)
             $0.height.equalTo(44)
-        }
-        cornerRectangleView.addSubview(addCurrencyButton)
-        
-        tableView.register(ConverterCell.self, forCellReuseIdentifier: "ConverterCell")
-        tableView.separatorStyle = .none
-        
-        cornerRectangleView.addSubview(tableView)
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(buyButton.snp.bottom).offset(32)
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalTo(addCurrencyButton.snp.top).offset(-16)
         }
         
         var config = UIButton.Configuration.plain()
@@ -92,14 +84,25 @@ class ConverterView: UIView {
         addCurrencyButton.titleLabel?.font = UIFont(name: "Lato-Regular", size: 13)
         addCurrencyButton.addTarget(self, action: #selector(addCurrencyButtonTapped), for: .touchUpInside)
         
+        cornerRectangleView.addSubview(addCurrencyButton)
         addCurrencyButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-50)
         }
+        
+        tableView.register(ConverterCell.self, forCellReuseIdentifier: "ConverterCell")
+        tableView.separatorStyle = .none
+        
+        cornerRectangleView.addSubview(tableView)
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(buyButton.snp.bottom).offset(32)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalTo(addCurrencyButton.snp.top).offset(-16)
+        }
     }
     
     private func setupDataSource() {
-        dataSource = UITableViewDiffableDataSource<Int, CurrencyViewModel.ConverterCurrencyModel>(tableView: tableView) { tableView, indexPath, currency in
+        dataSource = UITableViewDiffableDataSource<Int, CurrencyModel>(tableView: tableView) { tableView, indexPath, currency in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConverterCell", for: indexPath) as? ConverterCell else {
                 return UITableViewCell()
             }
@@ -109,8 +112,8 @@ class ConverterView: UIView {
         }
     }
     
-    private func applySnapshot(with currencies: [CurrencyViewModel.ConverterCurrencyModel]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, CurrencyViewModel.ConverterCurrencyModel>()
+    private func applySnapshot(with currencies: [CurrencyModel]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CurrencyModel>()
         snapshot.appendSections([0])
         snapshot.appendItems(currencies, toSection: 0)
         dataSource.apply(snapshot, animatingDifferences: true)

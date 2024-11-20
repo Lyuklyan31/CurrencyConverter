@@ -10,7 +10,7 @@ class CurrenciesViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private var sortedKeys: [String] = []
     
-    private var dataSource: UITableViewDiffableDataSource<String, CurrencyModel>!
+    private var dataSource: UITableViewDiffableDataSource<String, СurrenciesModel>!
     private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: CurrencyViewModel) {
@@ -82,7 +82,7 @@ class CurrenciesViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        dataSource = UITableViewDiffableDataSource<String, CurrencyModel>(tableView: tableView) { tableView, indexPath, currencyData in
+        dataSource = UITableViewDiffableDataSource<String, СurrenciesModel>(tableView: tableView) { tableView, indexPath, currencyData in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath) as? CurrencyCell else {
                 return UITableViewCell()
             }
@@ -93,12 +93,12 @@ class CurrenciesViewController: UIViewController {
         }
     }
     
-    private func applySnapShot(with currencies: [CurrencyModel]) {
-        let groupedCurrencies = Dictionary(grouping: currencies) { (currency: CurrencyModel) -> String in
+    private func applySnapShot(with currencies: [СurrenciesModel]) {
+        let groupedCurrencies = Dictionary(grouping: currencies) { (currency: СurrenciesModel) -> String in
             return String(currency.code.prefix(1)).uppercased()
         }
         
-        var snapShot = NSDiffableDataSourceSnapshot<String, CurrencyModel>()
+        var snapShot = NSDiffableDataSourceSnapshot<String, СurrenciesModel>()
         sortedKeys = groupedCurrencies.keys.sorted()
         snapShot.appendSections(sortedKeys)
         
