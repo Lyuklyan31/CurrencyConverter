@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0458370B2CE2E7F80036CF03 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0458370A2CE2E7F80036CF03 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		040F5E992CE2D6B1004142BF /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0458370B2CE2E7F80036CF03 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = CurrencyConverter;
 			packageProductDependencies = (
+				0458370A2CE2E7F80036CF03 /* SnapKit */,
 			);
 			productName = CurrencyConverter;
 			productReference = 040F5E992CE2D6B1004142BF /* CurrencyConverter.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 040F5E902CE2D6B1004142BF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				045837092CE2E7F80036CF03 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 040F5E9A2CE2D6B1004142BF /* Products */;
 			projectDirPath = "";
@@ -333,6 +342,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		045837092CE2E7F80036CF03 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0458370A2CE2E7F80036CF03 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 045837092CE2E7F80036CF03 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 040F5E912CE2D6B1004142BF /* Project object */;
 }
