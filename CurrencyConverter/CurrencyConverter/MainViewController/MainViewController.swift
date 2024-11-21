@@ -48,6 +48,9 @@ class MainViewController: UIViewController {
         converterView.openSheetAction = { [weak self] in
             self?.openSheet()
         }
+        converterView.shareAction = { [weak self] in
+            self?.presentShareSheet()
+        }
         view.addSubview(converterView)
         converterView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(171)
@@ -61,6 +64,14 @@ class MainViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: currenciesVC)
         navigationController.modalPresentationStyle = .pageSheet
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func presentShareSheet() {
+        let textToShare = "Currency Converter"
+        let urlToShare = URL(string: "https://google.com")!
+        let activityViewController = UIActivityViewController(activityItems: [textToShare, urlToShare], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
 }
 

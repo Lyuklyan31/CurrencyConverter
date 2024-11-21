@@ -1,6 +1,6 @@
 import Foundation
 
-struct СurrenciesModel: Codable, Hashable {
+struct CurrenciesModel: Codable, Hashable {
     internal init(name: String, code: String) {
         self.name = name
         self.code = code
@@ -13,7 +13,7 @@ struct СurrenciesModel: Codable, Hashable {
         hasher.combine(code)
     }
 
-    static func == (lhs: СurrenciesModel, rhs: СurrenciesModel) -> Bool {
+    static func == (lhs: CurrenciesModel, rhs: CurrenciesModel) -> Bool {
         return lhs.code == rhs.code
     }
 }

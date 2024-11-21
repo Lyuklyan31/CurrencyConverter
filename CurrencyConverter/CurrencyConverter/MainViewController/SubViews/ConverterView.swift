@@ -11,12 +11,16 @@ class ConverterView: UIView {
     private let sellButton = UIButton()
     private let buyButton = UIButton()
     private let addCurrencyButton = UIButton()
-    private let tableView = UITableView()
     
+    private let tableView = UITableView()
     private var dataSource: UITableViewDiffableDataSource<Int, CurrencyModel>!
+    
+    private let shareButton = UIButton()
+    
     private var cancellables = Set<AnyCancellable>()
     
     var openSheetAction: (() -> Void)?
+    var shareAction: (() -> Void)?
     
     init(viewModel: CurrencyViewModel) {
         self.viewModel = viewModel
@@ -99,6 +103,16 @@ class ConverterView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalTo(addCurrencyButton.snp.top).offset(-16)
         }
+        
+        shareButton.setImage(UIImage(resource: .shareButton), for: .normal)
+        shareButton.contentMode = .scaleAspectFit
+        shareButton.addTarget(self, action: #selector(didTupShareButton), for: .touchUpInside)
+        
+        cornerRectangleView.addSubview(shareButton)
+        shareButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-12.8)
+            $0.trailing.equalToSuperview().offset(-10.56)
+        }
     }
     
     private func setupDataSource() {
@@ -157,5 +171,9 @@ class ConverterView: UIView {
     
     @objc private func addCurrencyButtonTapped() {
         openSheetAction?()
+    }
+    
+    @objc private func didTupShareButton() {
+        shareAction?()
     }
 }

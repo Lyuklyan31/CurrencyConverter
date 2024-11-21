@@ -6,13 +6,13 @@ enum СurrenciesServiceError: Error {
 }
 
 class СurrenciesService {
-    func fetchCurrencies() throws -> [СurrenciesModel] {
+    func fetchCurrencies() throws -> [CurrenciesModel] {
         guard let filepath = Bundle.main.path(forResource: "Currencies", ofType: "json") else {
             throw СurrenciesServiceError.fileNotFound(resource: "Currencies", fileType: "json")
         }
         
         let data = try Data(contentsOf: URL(fileURLWithPath: filepath))
-        let decodedData = try JSONDecoder().decode([String: СurrenciesModel].self, from: data)
+        let decodedData = try JSONDecoder().decode([String: CurrenciesModel].self, from: data)
         
         return Array(decodedData.values)
     }
