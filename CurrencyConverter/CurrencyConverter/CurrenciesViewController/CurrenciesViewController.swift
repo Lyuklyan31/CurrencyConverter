@@ -18,6 +18,7 @@ class CurrenciesViewController: UIViewController {
     init(viewModel: CurrencyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        viewModel.loadConverterList()
     }
     
     required init?(coder: NSCoder) {
@@ -95,14 +96,14 @@ class CurrenciesViewController: UIViewController {
             } else {
                 cell.applyUncheckedLook()
             }
+            
             return cell
         }
     }
     
     private func applySnapShot(with currencies: [CurrencyModel]) {
-        let groupedCurrencies = Dictionary(grouping: currencies) { (currency: CurrencyModel) -> String in
-            return String(currency.code.prefix(1)).uppercased()
-        }
+        let sortedCurrencies = currencies.sorted { $0.code < $1.code }
+        let groupedCurrencies = Dictionary(grouping: sortedCurrencies) { $0.code.prefix(1).uppercased() }
         
         var snapShot = NSDiffableDataSourceSnapshot<String, CurrencyModel>()
         sortedKeys = groupedCurrencies.keys.sorted()
@@ -114,13 +115,15 @@ class CurrenciesViewController: UIViewController {
             }
         }
         
-        dataSource.apply(snapShot, animatingDifferences: true)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapShot, animatingDifferences: true)
+        }
         
-        selectCityRow()
+        self.selectCityRow()
     }
     
     private func selectCityRow() {
-        guard let selectedIndex = viewModel.currencies.firstIndex(where: { $0 == viewModel.curency }) else { return }
+        guard let selectedIndex = viewModel.currencies.firstIndex(where: { $0.code == viewModel.currency.code }) else { return }
         let selectedIndexPath = IndexPath(row: selectedIndex, section: 0)
         
         tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
@@ -134,7 +137,11 @@ class CurrenciesViewController: UIViewController {
 // MARK: - UITableViewDelegate
 extension CurrenciesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.updateConverterList(at: indexPath.row)
+        guard let selectedCurrency = dataSource.itemIdentifier(for: indexPath) else { return }
+        
+        viewModel.updateConverterList(with: selectedCurrency)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -143,7 +150,6 @@ extension CurrenciesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = .clear
         
         let label = UILabel()
         label.text = sortedKeys[section]

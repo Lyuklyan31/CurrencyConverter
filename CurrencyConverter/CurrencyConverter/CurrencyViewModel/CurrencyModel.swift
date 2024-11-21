@@ -10,12 +10,9 @@ struct CurrencyModel: Codable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(name)
         hasher.combine(code)
-        hasher.combine(value)
     }
 
     static func == (lhs: CurrencyModel, rhs: CurrencyModel) -> Bool {
-        return lhs.name == rhs.name &&
-        lhs.code == rhs.code &&
-        lhs.value == rhs.value
+        return lhs.name == rhs.name && lhs.code == rhs.code 
     }
 }
