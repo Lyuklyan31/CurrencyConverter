@@ -1,10 +1,10 @@
 import Foundation
 
 struct CurrencyModel: Codable, Hashable {
-//    var id = UUID()
-    let name: String
-    let code: String
-    var value: Double
+    var id = UUID()
+    var name: String = ""
+    var code: String = ""
+    var value: Double = 0.0
     var isSelected: Bool = false
     
     func hash(into hasher: inout Hasher) {
