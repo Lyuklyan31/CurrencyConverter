@@ -7,16 +7,17 @@ class CurrenciesViewController: UIViewController {
     
     private let currencyNavigationBarView = CurrenciesNavigationBarView()
     private var currencySearchTextFieldView: CurrenciesSearchTextFieldView!
+    
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private var dataSource: UITableViewDiffableDataSource<String, CurrencyModel>!
+   
     private var sortedKeys: [String] = []
     
-    private var dataSource: UITableViewDiffableDataSource<String, СurrenciesModel>!
     private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: CurrencyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        viewModel.fetchCurrencies()
     }
     
     required init?(coder: NSCoder) {
@@ -82,23 +83,28 @@ class CurrenciesViewController: UIViewController {
     }
     
     private func setupDataSource() {
-        dataSource = UITableViewDiffableDataSource<String, СurrenciesModel>(tableView: tableView) { tableView, indexPath, currencyData in
+        dataSource = UITableViewDiffableDataSource<String, CurrencyModel>(tableView: tableView) { tableView, indexPath, currencyData in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath) as? CurrencyCell else {
                 return UITableViewCell()
             }
             
             cell.configure(with: "\(currencyData.code) - \(currencyData.name)")
             
+            if currencyData.isSelected {
+                cell.applyCheckedLook()
+            } else {
+                cell.applyUncheckedLook()
+            }
             return cell
         }
     }
     
-    private func applySnapShot(with currencies: [СurrenciesModel]) {
-        let groupedCurrencies = Dictionary(grouping: currencies) { (currency: СurrenciesModel) -> String in
+    private func applySnapShot(with currencies: [CurrencyModel]) {
+        let groupedCurrencies = Dictionary(grouping: currencies) { (currency: CurrencyModel) -> String in
             return String(currency.code.prefix(1)).uppercased()
         }
         
-        var snapShot = NSDiffableDataSourceSnapshot<String, СurrenciesModel>()
+        var snapShot = NSDiffableDataSourceSnapshot<String, CurrencyModel>()
         sortedKeys = groupedCurrencies.keys.sorted()
         snapShot.appendSections(sortedKeys)
         
@@ -109,15 +115,26 @@ class CurrenciesViewController: UIViewController {
         }
         
         dataSource.apply(snapShot, animatingDifferences: true)
+        
+        selectCityRow()
+    }
+    
+    private func selectCityRow() {
+        guard let selectedIndex = viewModel.currencies.firstIndex(where: { $0 == viewModel.curency }) else { return }
+        let selectedIndexPath = IndexPath(row: selectedIndex, section: 0)
+        
+        tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
+        
+        if let cell = tableView.cellForRow(at: selectedIndexPath) as? CurrencyCell {
+            cell.applyCheckedLook()
+        }
     }
 }
 
 // MARK: - UITableViewDelegate
 extension CurrenciesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
         viewModel.updateConverterList(at: indexPath.row)
-        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
