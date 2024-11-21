@@ -5,26 +5,30 @@ class CurrencyViewModel {
     private var currencyService = СurrenciesService()
     private let rateService = RateService()
     
-    @Published private(set) var currencies = [СurrenciesModel]()
+    @Published private(set) var currencies = [CurrencyModel]()
     @Published private(set) var converterList = [CurrencyModel]() {
         didSet { saveConverterList() }
     }
     @Published private(set) var alertMessage: String?
     @Published private(set) var conversionRates = [String: Double]()
     
-    private var allCurrencies = [СurrenciesModel]()
+    @Published private(set) var curency = CurrencyModel()
+    
     private let userDefaultsKey = "converterList"
     
     init() {
         fetchCurrencies()
-        loadConverterList()
+//        loadConverterList()
         loadExchangeRates()
     }
     
-    func fetchCurrencies() {
+    private func fetchCurrencies() {
         do {
-            allCurrencies = try currencyService.fetchCurrencies()
-            currencies = allCurrencies
+            let fetchedCurrencies = try currencyService.fetchCurrencies()
+                    
+            self.currencies = fetchedCurrencies.map { currency in
+                CurrencyModel(name: currency.name, code: currency.code)
+            }
         } catch {
             alertMessage = "Error fetching currencies."
         }
@@ -32,9 +36,9 @@ class CurrencyViewModel {
     
     func filterCurrencies(with searchText: String) {
         if searchText.isEmpty {
-            currencies = allCurrencies
+            fetchCurrencies()
         } else {
-            currencies = allCurrencies.filter { currency in
+            currencies = currencies.filter { currency in
                 currency.name.lowercased().contains(searchText.lowercased()) ||
                 currency.code.lowercased().contains(searchText.lowercased())
             }
@@ -42,8 +46,12 @@ class CurrencyViewModel {
     }
     
     func updateConverterList(at indexPath: Int) {
+        currencies.indices.forEach { currencies[$0].isSelected = false }
+        currencies[indexPath].isSelected = true
+        curency = currencies[indexPath]
+        
         let selectedCurrency = currencies[indexPath]
-        guard !converterList.contains(where: { $0.code == selectedCurrency.code }) else { return }
+        guard !converterList.contains(where: { $0.isSelected }) else { return }
         let newCurrency = CurrencyModel(name: selectedCurrency.name, code: selectedCurrency.code, value: 0.0)
         converterList.append(newCurrency)
     }
